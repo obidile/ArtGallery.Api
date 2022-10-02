@@ -4,7 +4,7 @@
     {
         Artist = 1,
         Customer = 2,
-        Admin
+        Admin =3,
     }
 
 }
