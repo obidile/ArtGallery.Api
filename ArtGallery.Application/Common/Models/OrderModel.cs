@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace ArtGallery.Application.Common.Models
 {
-    public class OrderModel : BaseModel, IMapFrom<OrderItem>
+    public class OrderModel : BaseModel, IMapFrom<Order>
     {
-        public long? UserId { get; set; }
+        public long? OrderId { get; set; }
         public OtherStatus Status { get; set; }
         public long OrderAmount { get; set; }
         public long AmountPaid { get; set; }

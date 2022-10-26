@@ -7,6 +7,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
 		<PackageReference Include="FluentValidation.AspNetCore" Version="10.3.4" />
 		<PackageReference Include="Serilog.Sinks.Seq" Version="5.2.0" />
@@ -21,6 +22,10 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\ArtGallery.Infrastucture\ArtGallery.Infrastucture.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="wwwroot\img\" />
 	</ItemGroup>
 
 </Project>

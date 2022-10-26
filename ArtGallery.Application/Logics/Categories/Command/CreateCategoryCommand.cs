@@ -20,11 +20,11 @@ public class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCo
     }
 }
 
-public class CreateCartCommandHandler : IRequestHandler<CreateCategoryCommand, ResponseModel>
+public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, ResponseModel>
 {
     private readonly IApplicationContext _dbContext;
     private readonly IMapper _mapper;
-    public CreateCartCommandHandler(IApplicationContext dbContext, IMapper mapper)
+    public CreateCategoryCommandHandler(IApplicationContext dbContext, IMapper mapper)
     {
         _dbContext = dbContext;
         _mapper = mapper;

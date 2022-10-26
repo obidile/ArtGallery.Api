@@ -9,7 +9,7 @@ namespace ArtGallery.Application.Logics.OrderItems;
 
 public class CreateOrderItemCommand : IRequest<ResponseModel>
 {
-    public long? UserId { get; set; }
+    public long? OrderItemId { get; set; }
     public long ProductId { get; set; }
     public long Quantity { get; set; }
     public long UnitPrice { get; set; }
@@ -20,7 +20,7 @@ public class CreateOrderItemCommandValidator : AbstractValidator<CreateOrderItem
 {
     public CreateOrderItemCommandValidator()
     {
-        RuleFor(x => x.UserId).Empty();
+        RuleFor(x => x.OrderItemId).Empty();
         RuleFor(x => x.ProductId).Empty();
         RuleFor(x => x.Quantity).Empty();
         RuleFor(x => x.UnitPrice).Empty();
@@ -49,7 +49,7 @@ public class CreateOrderItemCommandHandler : IRequestHandler<CreateOrderItemComm
 
         var model = new OrderItem
         {
-            UserId = request.UserId,
+            OrderItemId = request.OrderItemId,
             ProductId = request.ProductId,
             Quantity = request.Quantity,
             UnitPrice = request.UnitPrice,

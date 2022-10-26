@@ -36,7 +36,6 @@ public class DeleteArtWorkCommandHandler : IRequestHandler<DeleteArtWorkCommand,
             return ResponseModel.Failure("ArtWork Was not found");
         }
 
-        //entity.LastModifiedBy = request.DeletedBy;
         _dbContext.ArtWorks.Remove(entity);
 
         await _dbContext.SaveChangesAsync(cancellationToken);

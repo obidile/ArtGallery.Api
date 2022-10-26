@@ -1,4 +1,6 @@
-﻿using ArtGallery.Application.Common.Interfaces;
+﻿using ArtGallery.Application.Common.Exceptions;
+using ArtGallery.Application.Common.Helpers;
+using ArtGallery.Application.Common.Interfaces;
 using ArtGallery.Application.Common.Models;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -43,9 +45,8 @@ namespace ArtGallery.Application.Logics.ArtWorks.Queries
 
             if (data == null)
             {
-                throw new("No ArtWork with the specified ID was found.");
+                ResponseModel.Failure("No Artwork with the specified ID was found.");
             }
-
             return data;
         }
     }

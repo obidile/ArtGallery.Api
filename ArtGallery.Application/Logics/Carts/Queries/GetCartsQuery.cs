@@ -25,7 +25,7 @@ public class CartsQueryHandler : IRequestHandler<GetCartsQuery, List<CartModel>>
 
     public async Task<List<CartModel>> Handle(GetCartsQuery request, CancellationToken cancellationToken)
     {
-        var result = await _dbContext.Carts.AsNoTracking().AsNoTracking().OrderBy(x => x.UserId).ProjectTo<CartModel>(_mapper.ConfigurationProvider).ToListAsync();
+        var result = await _dbContext.Carts.AsNoTracking().AsNoTracking().OrderBy(x => x.CartSessionKey).ProjectTo<CartModel>(_mapper.ConfigurationProvider).ToListAsync();
 
         return result;
     }

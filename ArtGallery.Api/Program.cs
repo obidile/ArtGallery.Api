@@ -38,6 +38,17 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 
 builder.Services.AddScoped<IApplicationContext, ApplicationContext>();
 
+var corsPolicy = "MyGalleryPolicy";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(corsPolicy,
+    policy =>
+    {
+        //policy.WithOrigins("http://example.com", "http://www.contoso.com");
+        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+    });
+});
+
 builder.Services.AddControllers(options => options.Filters.Add<ApiExceptionFilterAttribute>())
     .AddJsonOptions(options =>
     {
@@ -58,8 +69,16 @@ app.UseSwagger();
 app.UseSwaggerUI();
 //}
 
+//app.UseHealthChecks("/health");
+app.UseStaticFiles();
+
 app.UseHttpsRedirection();
 
+app.UseRouting();
+
+app.UseCors(corsPolicy);
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

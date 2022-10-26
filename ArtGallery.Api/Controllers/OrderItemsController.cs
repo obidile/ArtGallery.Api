@@ -21,14 +21,14 @@ public class OrderItemsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateOrderItem(CreateOrderItemCommand command)
+    public async Task<IActionResult> CreateOrderItem([FromForm] CreateOrderItemCommand command)
     {
         var result = await mediator.Send(command);
         return Ok(result);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update([FromRoute] long Id, [FromBody] UpdateOrderItemCommand command)
+    public async Task<IActionResult> Update([FromRoute] long Id, [FromForm] UpdateOrderItemCommand command)
     {
         if (command != null)
         {

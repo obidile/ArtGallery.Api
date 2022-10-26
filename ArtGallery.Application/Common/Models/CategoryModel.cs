@@ -10,6 +10,10 @@ namespace ArtGallery.Application.Common.Models
 {
     public class CategoryModel : BaseModel, IMapFrom<Category>
     {
+        public long CategoryId { get; set; }
         public string Name { get; set; }
+
+
+        public List<ArtWork> ArtWorks { get; set; }
     }
 }

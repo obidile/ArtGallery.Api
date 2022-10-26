@@ -20,7 +20,7 @@ public class AuthController : ControllerBase //ApiControllerBase
     }
 
     [HttpPost("Login")]
-    public async Task<IActionResult> Login([FromBody] LoginCommand command)
+    public async Task<IActionResult> Login([FromForm] LoginCommand command)
     {
         var login = await mediator.Send(command);
         return Ok(login);
@@ -28,7 +28,7 @@ public class AuthController : ControllerBase //ApiControllerBase
 
     [Produces("application/json")]
     [HttpPost("Logout")]
-    public async Task<IActionResult> Logout([FromRoute] long Id, [FromBody] LogoutCommand command)
+    public async Task<IActionResult> Logout([FromRoute] long Id, [FromForm] LogoutCommand command)
     {
         if (User.Identity.IsAuthenticated)
         {

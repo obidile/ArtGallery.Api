@@ -5,11 +5,10 @@ namespace ArtGallery.Application.Common.Models
 {
     public class CartModel : BaseModel, IMapFrom<Cart>
     {
-        public long UserId { get; set; }
-        public long ProductId { get; set; }
+        public string CartSessionKey { get; set; }
+        public long? UserId { get; set; }
+        public long ArtWorkId { get; set; }
         public long Quantity { get; set; }
-        public long Discount { get; set; }
-
-        public User User { get; set; }
+        public List<CartItem> CartItem { get; set; }
     }
 }

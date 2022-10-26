@@ -7,14 +7,14 @@ namespace ArtGallery.Application.Handlers.Carts.Commands;
 
 public class DeleteCartCommand : IRequest<ResponseModel>
 {
-    public long Id { get; set; }
+    public string CartSessionKey { get; set; }
 }
 
 public class DeleteCartCommandValidator : AbstractValidator<DeleteCartCommand>
 {
     public DeleteCartCommandValidator()
     {
-        RuleFor(v => v.Id).NotEmpty().WithMessage("Id is required.");
+        RuleFor(v => v.CartSessionKey).NotEmpty().WithMessage("Id is required.");
     }
 }
 
@@ -29,14 +29,14 @@ public class DeleteCartCommandHandler : IRequestHandler<DeleteCartCommand, Respo
 
     public async Task<ResponseModel> Handle(DeleteCartCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _dbContext.Carts.FindAsync(request.Id);
+        var entity = await _dbContext.Carts.FindAsync(request.CartSessionKey);
 
         if (entity == null)
         {
             return ResponseModel.Failure("Cart Was not found");
         }
 
-        //entity.LastModifiedBy = request.DeletedBy;
+
         _dbContext.Carts.Remove(entity);
 
         await _dbContext.SaveChangesAsync(cancellationToken);

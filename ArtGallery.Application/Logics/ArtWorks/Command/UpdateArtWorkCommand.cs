@@ -5,6 +5,9 @@ using AutoMapper;
 using ArtGallery.Application.Common.Interfaces;
 using ArtGallery.Application.Common.Models;
 using ArtGallery.Domain.Entities;
+using Microsoft.AspNetCore.Http;
+using ArtGallery.Application.Common.Helpers;
+using Serilog;
 
 namespace ArtGallery.Application.Handlers.ArtWorks.Commands;
 
@@ -16,11 +19,12 @@ public partial class UpdateArtWorkCommand : IRequest<ResponseModel>
     public long Rating { get; set; }
     public long Quantity { get; set; }
     public long Price { get; set; }
-    public Category Category { get; set; }
-    public string ArtImage { get; set; }
-    public long CategoryId { get; set; }
+    public string Category { get; set; }
+    public IFormFile ArtImageUpload { get; set; }
     public long DisCount { get; set; }
     public DateTime ProductionYear { get; set; }
+    public long CategoryId { get; set; }
+    public Category Categories { get; set; }
 }
 
 public class UpdateArtWorkCommandValidator : AbstractValidator<UpdateArtWorkCommand>
@@ -59,8 +63,36 @@ public class UpdateArtWorkCommandHandler : IRequestHandler<UpdateArtWorkCommand,
         artWork.DisCount = request.DisCount;
         artWork.ProductionYear = request.ProductionYear;
 
-
         await _dbContext.SaveChangesAsync(cancellationToken);
+
+
+        if (request.ArtImageUpload == null || request.ArtImageUpload.Length == 0)
+        {
+            try
+            {
+                var filePath = $"wwwroot/img/Artworks/{artWork.Id}";
+                if (!Directory.Exists(filePath))
+                {
+                    Directory.CreateDirectory(filePath);
+                }
+
+                var filename = Guid.NewGuid().ToString() + "_" + request.ArtImageUpload.FileName;
+                filePath = Path.Combine(filePath, filename);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    request.ArtImageUpload.CopyTo(fileStream);
+                }
+
+                artWork.ArtImage = filePath.Replace("wwwroot/", "");
+                _dbContext.ArtWorks.Update(artWork);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Artwork Upload");
+                return ResponseModel.Failure("Your request was saved but error occure while processing your image.");
+            }
+        }
 
         return ResponseModel<ArtWorkModel>.Success(_mapper.Map<ArtWorkModel>(artWork), "ArtWork was successfully updated");
     }

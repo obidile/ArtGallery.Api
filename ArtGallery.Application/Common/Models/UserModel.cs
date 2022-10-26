@@ -6,7 +6,6 @@ namespace ArtGallery.Application.Common.Models
 {
     public class UserModel : BaseModel, IMapFrom<User>
     {
-        public long UserId { get; set; }
         public AccountTypeEnum AccountType { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

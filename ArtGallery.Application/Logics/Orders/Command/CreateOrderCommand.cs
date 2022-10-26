@@ -11,7 +11,7 @@ namespace ArtGallery.Application.Logics.Orders.Command;
 
 public class CreateOrderCommand : IRequest<ResponseModel>
 {
-    public long UserId { get; set; }
+    public long OrderId { get; set; }
     public OtherStatus Status { get; set; }
     public long OrderAmount { get; set; }
     public long AmountPaid { get; set; }
@@ -24,7 +24,7 @@ public class CreateOrderCommandValidator : AbstractValidator<CreateOrderCommand>
 {
     public CreateOrderCommandValidator()
     {
-        RuleFor(x => x.UserId).Empty();
+        RuleFor(x => x.OrderId).Empty();
         RuleFor(v => v.Status).NotEmpty();
         RuleFor(v => v.OrderAmount);
         RuleFor(x => x.AmountPaid);
@@ -46,7 +46,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Res
 
     public async Task<ResponseModel> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
-        var exist = await _dbContext.Orders.AsNoTracking().AnyAsync(x => x.UserId == request.UserId);
+        var exist = await _dbContext.Orders.AsNoTracking().AnyAsync(x => x.OrderId == request.OrderId);
         if (exist)
         {
             return ResponseModel.Failure("This artwork Name already exists.");
@@ -54,7 +54,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Res
 
         var model = new Order
         {
-            UserId = request.UserId,
+            OrderId = request.OrderId,
             Status = request.Status,
             OrderAmount = request.OrderAmount,
             AmountPaid = request.AmountPaid,

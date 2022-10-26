@@ -20,14 +20,14 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateCategory(CreateCategoryCommand command)
+    public async Task<IActionResult> CreateCategory([FromForm] CreateCategoryCommand command)
     {
         var result = await mediator.Send(command);
         return Ok(result);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update([FromRoute] long Id, [FromBody] UpdateCategoryCommand command)
+    public async Task<IActionResult> Update([FromRoute] long Id, [FromForm] UpdateCategoryCommand command)
     {
         if (command != null)
         {

@@ -25,7 +25,7 @@ public class OrderItemsQueryHandler : IRequestHandler<GetOrderItemsQuery, List<O
 
     public async Task<List<OrderItemModel>> Handle(GetOrderItemsQuery request, CancellationToken cancellationToken)
     {
-        var result = await _dbContext.OrderItems.AsNoTracking().AsNoTracking().OrderBy(x => x.UserId).ProjectTo<OrderItemModel>(_mapper.ConfigurationProvider).ToListAsync();
+        var result = await _dbContext.OrderItems.AsNoTracking().AsNoTracking().OrderBy(x => x.OrderItemId).ProjectTo<OrderItemModel>(_mapper.ConfigurationProvider).ToListAsync();
 
         return result;
     }

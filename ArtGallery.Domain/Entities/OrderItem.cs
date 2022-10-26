@@ -4,7 +4,7 @@ namespace ArtGallery.Domain.Entities
 {
     public class OrderItem : BaseObject
     {
-        public long? UserId { get; set; }
+        public long? OrderItemId { get; set; }
         public long ProductId { get; set; }
         public long Quantity { get; set; }
         public long UnitPrice { get; set; }

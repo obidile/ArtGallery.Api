@@ -5,7 +5,7 @@ namespace ArtGallery.Domain.Entities
 {
     public class Order : BaseObject
     {
-        public long UserId { get; set; }
+        public long OrderId { get; set; }
         public OtherStatus Status { get; set; }
         public long OrderAmount { get; set; }
         public long AmountPaid { get; set; }

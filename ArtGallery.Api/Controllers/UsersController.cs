@@ -19,14 +19,14 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateUser(CreateUserCommand command)
+    public async Task<IActionResult> CreateUser([FromForm] CreateUserCommand command)
     {
         var result = await mediator.Send(command);
         return Ok(result);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update([FromRoute] long UserId, [FromBody] UpdateUserCommand command)
+    public async Task<IActionResult> Update([FromRoute] long UserId, [FromForm] UpdateUserCommand command)
     {
         if (command != null)
         {

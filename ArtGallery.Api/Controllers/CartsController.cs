@@ -19,22 +19,23 @@ public class CartsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateCart(CreateCartCommand command)
+    public async Task<IActionResult> CreateCart([FromForm] AddCartCommand command)
     {
         var result = await mediator.Send(command);
         return Ok(result);
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Update([FromRoute] long Id, [FromBody] UpdateCartCommand command)
-    {
-        if (command != null)
-        {
-            command.CartId = Id;
-        }
-        var result = await mediator.Send(command);
-        return Ok(result);
-    }
+    //Cart can not be updated only added and removed
+    //[HttpPut("{id}")]
+    //public async Task<IActionResult> Update([FromRoute] long Id, [FromForm] UpdateCartCommand command)
+    //{
+    //    if (command != null)
+    //    {
+    //        command.CartId = Id;
+    //    }
+    //    var result = await mediator.Send(command);
+    //    return Ok(result);
+    //}
 
 
     [HttpGet]
@@ -53,7 +54,7 @@ public class CartsController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete([FromRoute] long Id)
     {
-        await mediator.Send(new DeleteCartCommand { Id = Id });
+        await mediator.Send(new DeleteCartCommand { CartSessionKey = Id.ToString() });
 
         return Ok(ResponseModel.Success("Deleted Successfully"));
     }
