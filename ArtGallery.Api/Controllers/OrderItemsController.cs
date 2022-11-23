@@ -32,7 +32,7 @@ public class OrderItemsController : ControllerBase
     {
         if (command != null)
         {
-            command.OrderItemId = Id;
+            command.orderId = Id;
         }
         var result = await mediator.Send(command);
         return Ok(result);

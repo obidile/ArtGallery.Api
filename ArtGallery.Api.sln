@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32602.215
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtGallery.Api", "ArtGallery.Api\ArtGallery.Api.csproj", "{B1CBB6FB-738D-4E1F-8DC5-FD01C1912951}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArtGallery.Api", "ArtGallery.Api\ArtGallery.Api.csproj", "{B1CBB6FB-738D-4E1F-8DC5-FD01C1912951}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtGallery.Domain", "ArtGallery.Domain\ArtGallery.Domain.csproj", "{8042C1C2-FAC3-4D1B-8933-BFB520DB608F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArtGallery.Domain", "ArtGallery.Domain\ArtGallery.Domain.csproj", "{8042C1C2-FAC3-4D1B-8933-BFB520DB608F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtGallery.Application", "ArtGallery.Application\ArtGallery.Application.csproj", "{EF9B5C73-69B7-42FD-BB17-B45AEEC43FE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArtGallery.Application", "ArtGallery.Application\ArtGallery.Application.csproj", "{EF9B5C73-69B7-42FD-BB17-B45AEEC43FE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtGallery.Infrastucture", "ArtGallery.Infrastucture\ArtGallery.Infrastucture.csproj", "{E39A93E1-2A2B-42C8-91B0-790E1E0C49CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArtGallery.Infrastucture", "ArtGallery.Infrastucture\ArtGallery.Infrastucture.csproj", "{E39A93E1-2A2B-42C8-91B0-790E1E0C49CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtGallery.Persistence", "ArtGallery.Persistence\ArtGallery.Persistence.csproj", "{D3CC1159-BF05-4805-9A6E-95B0EABE5562}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArtGallery.Persistence", "ArtGallery.Persistence\ArtGallery.Persistence.csproj", "{D3CC1159-BF05-4805-9A6E-95B0EABE5562}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

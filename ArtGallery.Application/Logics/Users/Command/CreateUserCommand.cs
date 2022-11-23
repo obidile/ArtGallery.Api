@@ -48,8 +48,8 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Respo
         _dbContext = dbContext;
         _mapper = mapper;
     }
-
     public async Task<ResponseModel> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+
     {
         var exist = await _dbContext.Users.AsNoTracking().AnyAsync(x => x.EmailAddress == request.EmailAddress);
         if (exist)

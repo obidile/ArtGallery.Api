@@ -44,11 +44,11 @@ public class CartsController : ControllerBase
         return Ok(await mediator.Send(new GetCartsQuery()));
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> Get([FromRoute] long id)
-    {
-        return Ok(await mediator.Send(new GetCartByIdQuery(id)));
-    }
+    //[HttpGet("{id}")]
+    //public async Task<IActionResult> Get([FromRoute] long id)
+    //{
+    //    return Ok(await mediator.Send(new GetCartByIdQuery(id)));
+    //}
 
 
     [HttpDelete("{id}")]

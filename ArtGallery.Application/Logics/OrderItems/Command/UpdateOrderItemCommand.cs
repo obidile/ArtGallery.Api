@@ -4,24 +4,19 @@ using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using ArtGallery.Application.Common.Interfaces;
 using ArtGallery.Application.Common.Models;
+using ArtGallery.Domain.Entities;
 
 namespace ArtGallery.Application.Handlers.OrderItems.Commands;
 
 public partial class UpdateOrderItemCommand : IRequest<ResponseModel>
 {
-    public long OrderItemId { get; set; }
-    public long ProductId { get; set; }
     public long Quantity { get; set; }
     public long UnitPrice { get; set; }
     public long Discount { get; set; }
-}
-
-public class UpdateOrderItemCommandValidator : AbstractValidator<UpdateOrderItemCommand>
-{
-    public UpdateOrderItemCommandValidator()
-    {
-        RuleFor(v => v.OrderItemId).NotEmpty();
-    }
+    public long ArtworkId { get; set; }
+    public ArtWork ArtWork { get; set; }
+    public long orderId { get; set; }
+    public Order Order { get; set; }
 }
 
 public class UpdateOrderItemCommandHandler : IRequestHandler<UpdateOrderItemCommand, ResponseModel>
@@ -37,17 +32,13 @@ public class UpdateOrderItemCommandHandler : IRequestHandler<UpdateOrderItemComm
 
     public async Task<ResponseModel> Handle(UpdateOrderItemCommand request, CancellationToken cancellationToken)
     {
-        var orderItem = await _dbContext.OrderItems.FirstOrDefaultAsync(x => x.Id == request.OrderItemId);
+        var orderItem = await _dbContext.OrderItems.FirstOrDefaultAsync(x => x.Id == request.orderId);
 
         if (orderItem == null)
         {
             return ResponseModel.Failure("OrderItem not found");
         }
-
-        orderItem.ProductId = request.ProductId;
-        orderItem.Quantity = request.Quantity;
-        orderItem.UnitPrice = request.UnitPrice;
-        orderItem.Discount = request.Discount;
+        orderItem = _mapper.Map<OrderItem>(request);
 
 
         await _dbContext.SaveChangesAsync(cancellationToken);

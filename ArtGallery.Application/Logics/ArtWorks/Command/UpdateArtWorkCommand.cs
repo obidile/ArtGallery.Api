@@ -23,8 +23,6 @@ public partial class UpdateArtWorkCommand : IRequest<ResponseModel>
     public IFormFile ArtImageUpload { get; set; }
     public long DisCount { get; set; }
     public DateTime ProductionYear { get; set; }
-    public long CategoryId { get; set; }
-    public Category Categories { get; set; }
 }
 
 public class UpdateArtWorkCommandValidator : AbstractValidator<UpdateArtWorkCommand>
@@ -62,6 +60,7 @@ public class UpdateArtWorkCommandHandler : IRequestHandler<UpdateArtWorkCommand,
         artWork.Price = request.Price;
         artWork.DisCount = request.DisCount;
         artWork.ProductionYear = request.ProductionYear;
+        artWork.UpdateDate = DateTime.Now;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 

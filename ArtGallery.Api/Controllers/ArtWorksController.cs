@@ -39,11 +39,11 @@ public class ArtWorksController : ControllerBase
         return Ok(result);
     }
 
-
     [HttpGet]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> Get([FromQuery] string title, string price)
     {
-        return Ok(await mediator.Send(new GetArtWorksQuery()));
+        return Ok(await mediator
+            .Send(new GetArtWorksQuery() {title = title, price = price } ));
     }
 
     [HttpGet("{id}")]
@@ -58,6 +58,6 @@ public class ArtWorksController : ControllerBase
     {
          await mediator.Send(new DeleteArtWorkCommand { Id = Id });
 
-        return Ok(ResponseModel.Success("Deleted Successfully"));
+        return Ok(ResponseModel.Success("Removed Successfully"));
     }
 }

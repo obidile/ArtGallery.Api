@@ -37,6 +37,7 @@ public class AddCartCommandHandler : IRequestHandler<AddCartCommand, ResponseMod
     public async Task<ResponseModel> Handle(AddCartCommand request, CancellationToken cancellationToken)
     {
         var product = await _dbContext.ArtWorks.AsNoTracking().FirstOrDefaultAsync(x => x.Id == request.ArtWorkId);
+
         if (product == null)
         {
             return ResponseModel.Failure("This artwork does not exist.");
