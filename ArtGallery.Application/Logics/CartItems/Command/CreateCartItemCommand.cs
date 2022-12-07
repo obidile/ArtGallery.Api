@@ -35,14 +35,24 @@ public class CreateCartitemCommandHandler : IRequestHandler<CreateCartItemComman
     }
     public async Task<string> Handle(CreateCartItemCommand request, CancellationToken cancellationToken)
     {
-        var model = _mapper.Map<CartItem>(request);
+        var cart = await _dbContext.Carts.AsNoTracking().FirstOrDefaultAsync(x => x.Id == request.ArtworkId);
+        if (cart == null)
+        {
+            return "No artwork has been added to cart";
+        }
+
+        var model = new CartItem()
+        {
+            CartId = request.CartId,
+            ArtworkId = request.ArtworkId,
+            ArtWork = request.ArtWork
+        };
 
         _dbContext.CartItems.Add(model);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        //return "Your Order has been placed";
-        return "Your cart has been added to your cartItmes List";
+        return "Your cart has been added to cartItmes";
     }
 
 

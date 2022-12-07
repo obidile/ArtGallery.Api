@@ -12,5 +12,6 @@ public interface IApplicationContext
     DbSet<CartItem> CartItems { get; set; }
     DbSet<OrderItem> OrderItems { get; set; }
     DbSet<Order> Orders { get; set; }
+    DbSet<Payment> Payments { get; set; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

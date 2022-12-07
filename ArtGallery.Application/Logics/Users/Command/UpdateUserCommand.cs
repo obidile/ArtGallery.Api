@@ -51,6 +51,7 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Respo
         user.LastName = request.LastName;
         user.PhoneNumber = request.PhoneNumber;
         user.EmailAddress = request.EmailAddress;
+        user.UpdateDate = DateTime.Now;
 
 
         await _dbContext.SaveChangesAsync(cancellationToken);

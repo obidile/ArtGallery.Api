@@ -66,7 +66,8 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Respo
             Location = request.Location,
             IsActive = true,
             AccountType = request.AccountType,
-            PasswordHash = Crypto.HashPassword(request.Password)
+            PasswordHash = Crypto.HashPassword(request.Password),
+            CreatedDate = DateTime.Now,
         };
 
         _dbContext.Users.Add(model);

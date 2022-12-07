@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using ArtGallery.Application.Common.Interfaces;
 using ArtGallery.Application.Common.Models;
-using ArtGallery.Domain.Entities;
 using Microsoft.AspNetCore.Http;
-using ArtGallery.Application.Common.Helpers;
 using Serilog;
+using Microsoft.Extensions.Configuration;
+using ArtGallery.Application.Common.Helpers;
 
 namespace ArtGallery.Application.Handlers.ArtWorks.Commands;
 
-public partial class UpdateArtWorkCommand : IRequest<ResponseModel>
+public partial class UpdateArtWorkCommand : IRequest<string>
 {
     public long ArtWorkId { get; set; }
     public string Title { get; set; }
@@ -33,24 +33,51 @@ public class UpdateArtWorkCommandValidator : AbstractValidator<UpdateArtWorkComm
     }
 }
 
-public class UpdateArtWorkCommandHandler : IRequestHandler<UpdateArtWorkCommand, ResponseModel>
+public class UpdateArtWorkCommandHandler : IRequestHandler<UpdateArtWorkCommand, string>
 {
     private readonly IApplicationContext _dbContext;
     private readonly IMapper _mapper;
+    private readonly IConfiguration _configuration;
 
-    public UpdateArtWorkCommandHandler(IApplicationContext dbContext, IMapper mapper)
+    public UpdateArtWorkCommandHandler(IApplicationContext dbContext, IMapper mapper, IConfiguration configuration)
     {
         _dbContext = dbContext;
         _mapper = mapper;
+        _configuration = configuration;
     }
 
-    public async Task<ResponseModel> Handle(UpdateArtWorkCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(UpdateArtWorkCommand request, CancellationToken cancellationToken)
     {
         var artWork = await _dbContext.ArtWorks.FirstOrDefaultAsync(x => x.Id == request.ArtWorkId);
 
-        if (artWork == null)
+        var art = _dbContext.ArtWorks;
+        if (art.Any(x => x.Title == request.Title))
         {
-            return ResponseModel.Failure("ArtWork not found"); 
+            return "This Title already exists";
+        }
+
+        if (art.Any(x => x.Description.ToLower() == request.Description))
+        {
+            return "A Description same as already exist";
+        }
+
+        var ditryLan = _configuration.GetSection("DirtyLan").Get<List<string>>();
+        var disAllowed = ditryLan.Contains(request.Description);
+        if (disAllowed)
+        {
+            return "Cause words are not allowed";
+        }
+
+        var artBlackList = _configuration.GetSection("ArtBlackList").Get<List<string>>();
+        if (artBlackList.Any(x => x == request.Title.ToLower()))
+        {
+            return "The Inputed Title isn't allowed";
+        }
+
+        var minimumPrice = _configuration.GetValue<long>("MinimumPrice");
+        if (request.Price < minimumPrice)
+        {
+            return "The required minimum price for all artworks is 499";
         }
 
         artWork.Title = request.Title;
@@ -65,34 +92,17 @@ public class UpdateArtWorkCommandHandler : IRequestHandler<UpdateArtWorkCommand,
         await _dbContext.SaveChangesAsync(cancellationToken);
 
 
-        if (request.ArtImageUpload == null || request.ArtImageUpload.Length == 0)
+        if (request.ArtImageUpload != null || request.ArtImageUpload?.Length > 0)
         {
-            try
-            {
-                var filePath = $"wwwroot/img/Artworks/{artWork.Id}";
-                if (!Directory.Exists(filePath))
-                {
-                    Directory.CreateDirectory(filePath);
-                }
+            string folder = $"img/ArtImages/{artWork.Id}";
+            var fileName = Guid.NewGuid().ToString();
+            var filePath = Path.Combine($"wwwroot/{folder}", fileName);
+            await FileHelper.UploadFile(request.ArtImageUpload, filePath);
 
-                var filename = Guid.NewGuid().ToString() + "_" + request.ArtImageUpload.FileName;
-                filePath = Path.Combine(filePath, filename);
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    request.ArtImageUpload.CopyTo(fileStream);
-                }
-
-                artWork.ArtImage = filePath.Replace("wwwroot/", "");
-                _dbContext.ArtWorks.Update(artWork);
-                await _dbContext.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Artwork Upload");
-                return ResponseModel.Failure("Your request was saved but error occure while processing your image.");
-            }
+            _dbContext.ArtWorks.Update(artWork);
+            await _dbContext.SaveChangesAsync();
         }
 
-        return ResponseModel<ArtWorkModel>.Success(_mapper.Map<ArtWorkModel>(artWork), "ArtWork was successfully updated");
+        return "ArtWork was successfully updated";
     }
 }

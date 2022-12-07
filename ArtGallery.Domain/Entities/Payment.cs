@@ -1,9 +1,8 @@
-﻿using ArtGallery.Application.Common.Mappers;
-using ArtGallery.Domain.Entities;
+﻿using ArtGallery.Domain.Common;
 
-namespace ArtGallery.Application.Common.Models;
+namespace ArtGallery.Domain.Entities;
 
-public class PaymentModel : BaseModel, IMapFrom<Payment>
+public class Payment: BaseObject
 {
     public int Amount { get; set; }
     public string firstName { get; set; }

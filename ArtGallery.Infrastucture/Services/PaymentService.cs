@@ -12,11 +12,11 @@ namespace ArtGallery.Infrastucture.Services
         {
             _configuration = configuration;
         }
-        public async Task<ResponseModel<PaymentModel>> ConfirmPayment(string referenceId)
+        public async Task<ResponseModel<PaymentModel>> ConfirmPayment(string reference)
         {
             var testOrLiveSecret = _configuration.GetValue<string>("PayStack:SecretKey");
             var api = new PayStackApi(testOrLiveSecret);
-            var verifyResponse = api.Transactions.Verify(referenceId);
+            var verifyResponse = api.Transactions.Verify(reference);
             var result = new ResponseModel<PaymentModel>()
             {
                 Status = verifyResponse.Status,

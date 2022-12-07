@@ -5,7 +5,7 @@ using MediatR;
 
 namespace ArtGallery.Application.Logics.CartItems.Command;
 
-public class DeleteCartItemCommand : IRequest<ResponseModel>
+public class DeleteCartItemCommand : IRequest<string>
 {
     public long Id { get; set; }
 }
@@ -16,7 +16,7 @@ public class DeleteCartItemCommandValidator : AbstractValidator<DeleteCartItemCo
         RuleFor(v => v.Id).NotEmpty().WithMessage("Id is required.");
     }
 }
-public class DeleteCartItemCommandHandler : IRequestHandler<DeleteCartItemCommand, ResponseModel>
+public class DeleteCartItemCommandHandler : IRequestHandler<DeleteCartItemCommand, string>
 {
     private readonly IApplicationContext _dbContext;
 
@@ -24,19 +24,19 @@ public class DeleteCartItemCommandHandler : IRequestHandler<DeleteCartItemComman
     {
         _dbContext = context;
     }
-    public async Task<ResponseModel> Handle(DeleteCartItemCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(DeleteCartItemCommand request, CancellationToken cancellationToken)
     {
         var entity = await _dbContext.CartItems.FindAsync(request.Id);
 
         if (entity == null)
         {
-            return ResponseModel.Failure("Items Was not found");
+            return "Items Was not found";
         }
 
         _dbContext.CartItems.Remove(entity);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return ResponseModel.Success("Deleted Successfully");
+        return "Deleted Successfully";
     }
 }
