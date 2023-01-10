@@ -22,12 +22,10 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, str
 {
     private readonly IApplicationContext _dbContext;
     private readonly IMapper _mapper;
-    private readonly PaymentModel _paymentModel;
-    public CreateOrderCommandHandler(IApplicationContext dbContext, IMapper mapper, PaymentModel paymentModel)
+    public CreateOrderCommandHandler(IApplicationContext dbContext, IMapper mapper)
     {
         _dbContext = dbContext;
         _mapper = mapper;
-        _paymentModel = paymentModel;
     }
     public async Task<string> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
